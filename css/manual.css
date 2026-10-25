@@ -1,0 +1,761 @@
+/* Sirf brand manual.
+   One typeface (Montserrat, with Anek Devanagari for Hindi), one ink, lots of space.
+   Grid from the guidelines: 12 columns, margin = 1/12 of the width, gutter = margin / 3. */
+
+:root {
+  --paper: #ffffff;
+  --ink: #111111;                 /* Sirf Black */
+  --mist: #f3f3f1;                /* a breath of ink on paper, for cards */
+  --margin: max(20px, calc(100vw / 12));
+  --gutter: calc(var(--margin) / 3);
+  --space: clamp(72px, 8.5vw, 140px);   /* between blocks */
+  --ease: cubic-bezier(.22, 1, .36, 1);
+
+  /* Type scale */
+  --t-h1: clamp(44px, 6vw, 104px);     /* section heading */
+  --t-h2: clamp(30px, 3.4vw, 58px);    /* subheading / statement */
+  --t-h3: clamp(24px, 2.2vw, 36px);    /* block title */
+  --t-hi: clamp(22px, 2.4vw, 40px);    /* Devanagari beside a heading */
+  --t-body: clamp(18px, 1.35vw, 21px);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { background: var(--paper); color: var(--ink); }
+
+body {
+  /* Montserrat has no Devanagari; Anek Devanagari picks up any Hindi automatically. */
+  font-family: "Montserrat", "Anek Devanagari", sans-serif;
+  font-optical-sizing: auto;
+  font-size: var(--t-body);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img, svg { display: block; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+.wrap { padding-inline: var(--margin); }
+
+/* Hindi in its own family. */
+[lang="hi"] { font-family: "Anek Devanagari", sans-serif; }
+
+/* Small caps label, tracked out. */
+.label {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.label [lang="hi"] { letter-spacing: 0; font-size: 1.1em; }
+
+/* Lenis smooth scrolling */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+/* ── Navigation: always on top, inverts over whatever is behind it ── */
+
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 20;
+  display: flex;
+  justify-content: flex-end;
+  padding: 22px var(--margin);
+  color: #fff;
+  mix-blend-mode: difference;
+  pointer-events: none;
+}
+.nav a { pointer-events: auto; }
+.nav__links { display: flex; gap: clamp(14px, 2.4vw, 36px); }
+.nav__links a { position: relative; }
+.nav__links a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -4px;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .4s var(--ease);
+}
+.nav__links a:hover::after, .nav__links a[aria-current="true"]::after { transform: scaleX(1); }
+
+/* ── Banner ─────────────────────────────────────────────────────────── */
+
+.hero {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+/* Logo and type, laid out on the 1920 x 1080 Illustrator artboard. */
+.stage {
+  position: relative;
+  width: min(100vw, calc(100svh * 16 / 9));
+  aspect-ratio: 1920 / 1080;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.stage .logo, .stage .labels { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* The banner type is part of the artwork, so it stays in Anek Devanagari. */
+.labels { fill: #000; font-family: "Anek Devanagari", sans-serif; }
+.label--title { font-size: 46.85px; font-weight: 700; }
+.label--year  { font-size: 21.25px; font-weight: 400; }
+
+.bottles { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+
+/* ── Headings and text blocks ───────────────────────────────────────── */
+
+/* Clipped sideways so things sliding in from off screen don't widen the page. */
+.sec { padding-top: var(--space); overflow-x: clip; }
+main { padding-bottom: var(--space); }
+
+.sec-head__title {
+  font-size: var(--t-h1);
+  font-weight: 700;
+  line-height: .95;
+  letter-spacing: -.03em;
+}
+.sec-head__hi {
+  font-size: var(--t-hi);
+  font-weight: 500;
+  line-height: 1.2;
+}
+/* A heading line slides up out of its own mask; the room above and below keeps matras whole. */
+[data-reveal] { overflow: hidden; padding-block: .25em .12em; margin-block: -.25em -.12em; }
+[data-reveal] > span { display: block; }
+
+.block-title { font-size: var(--t-h3); font-weight: 700; line-height: 1.1; letter-spacing: -.02em; }
+/* Heading for each content block in a section (What we make, Positioning, …): one size everywhere. */
+.block-heading { font-size: var(--t-h2); font-weight: 700; line-height: 1.05; letter-spacing: -.025em; max-width: 20ch; }
+.block-text { margin-top: 14px; max-width: 40ch; }
+
+/* ── Introduction ───────────────────────────────────────────────────── */
+
+/* Heading, subheading, body: one block. */
+.intro-head { display: grid; gap: 10px; }
+.intro-head .label { margin-bottom: 6px; }
+/* Room under the heading so its descenders clear the Devanagari subheading. */
+.intro-head .sec-head__title { margin-bottom: .2em; }
+
+.only {
+  margin-top: clamp(28px, 3vw, 48px);
+  font-size: var(--t-h2);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -.025em;
+}
+.only__line {
+  font-size: clamp(17px, 2vw, 34px);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -.01em;
+  white-space: nowrap;
+}
+.only__sub { margin-top: 6px; max-width: 46ch; }
+/* "lots of space" makes some when you point at it. */
+.roomy { font-weight: 600; transition: letter-spacing .6s var(--ease); white-space: nowrap; }
+.roomy:hover { letter-spacing: .3em; }
+
+/* Swap: two words in one slot (English and Devanagari). Only the current one is ever
+   visible; the slot's width follows it, and there's room above and below for matras. */
+.swap {
+  position: relative;
+  display: inline-block;
+  vertical-align: bottom;
+  overflow: hidden;
+  padding-block: .3em .16em;
+  margin-block: -.3em -.16em;
+  transition: width .7s var(--ease);
+  cursor: pointer;
+}
+/* The word leaving fades out quickly; the word arriving fades in a beat later, so the two
+   never show at once. */
+.swap > span {
+  display: inline-block;
+  white-space: nowrap;
+  transition: transform .7s var(--ease), opacity .22s linear;
+}
+.swap > span + span { position: absolute; left: 0; top: .3em; }
+.swap > span:last-child { font-weight: 600; letter-spacing: 0; }
+.swap > span:first-child { transform: translateY(0); opacity: 1; transition-delay: .2s; }
+.swap > span:last-child { transform: translateY(45%); opacity: 0; transition-delay: 0s; }
+.swap.is-swapped > span:first-child { transform: translateY(-45%); opacity: 0; transition-delay: 0s; }
+.swap.is-swapped > span:last-child { transform: translateY(0); opacity: 1; transition-delay: .2s; }
+
+/* What we make: everything that isn't in the bottle, struck out as you scroll. */
+.make {
+  margin-top: var(--space);
+  display: grid;
+  grid-template-columns: 5fr 6fr;
+  gap: calc(var(--gutter) * 3);
+  align-items: start;
+}
+.nots { list-style: none; }
+.nots li {
+  position: relative;
+  width: fit-content;
+  font-size: clamp(28px, 3.4vw, 58px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -.025em;
+}
+.nots li::after {
+  content: "";
+  position: absolute;
+  left: -.04em; right: -.04em; top: 46%;
+  height: .08em;
+  background: var(--ink);
+  transform: scaleX(var(--strike, 0));
+  transform-origin: left;
+}
+.nots li:not(.nots__yes) { color: color-mix(in srgb, var(--ink) calc(100% - var(--strike, 0) * 55%), transparent); }
+.nots .nots__yes::after { display: none; }
+.nots .nots__yes { margin-top: .3em; }
+
+/* Positioning: the bottle at the table, as in the menus. */
+.table { margin-top: var(--space); }
+.table .label { margin-bottom: 12px; }
+
+.scene {
+  position: relative;
+  aspect-ratio: 16 / 8.5;
+  margin-top: clamp(10px, 2vw, 30px);
+}
+.scene__line { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.scene__line line { stroke: var(--ink); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.scene__item {
+  position: absolute;
+  transform-origin: 50% 100%;
+  will-change: transform;
+  cursor: pointer;
+}
+.scene__item img { width: 100%; height: auto; pointer-events: none; }
+
+/* Cards: number, heading, line. */
+.cards {
+  margin-top: var(--space);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gutter);
+  perspective: 1200px;
+}
+.card {
+  min-height: 300px;
+  padding: 26px 24px 28px;
+  border-radius: 20px;
+  background: var(--mist);
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+}
+.card__num { margin-bottom: auto; padding-bottom: 48px; }
+.card__title { font-size: var(--t-h3); font-weight: 700; line-height: 1.08; letter-spacing: -.02em; }
+.card__text { margin-top: 10px; }
+.card:nth-child(2) { background: var(--ink); color: var(--paper); }
+
+/* Home ground. */
+.home { margin-top: var(--space); }
+.home .label { margin-bottom: 12px; }
+.home__line {
+  font-size: var(--t-h2);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -.025em;
+}
+
+/* Mission and vision. */
+.belief {
+  margin-top: var(--space);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--gutter) * 3);
+}
+.belief .label { margin-bottom: 12px; }
+.belief__text {
+  max-width: 20ch;
+  font-size: clamp(26px, 2.6vw, 44px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+}
+
+/* Pillars: a list you play by pointing. */
+.pillars { margin-top: var(--space); }
+.pillars__list { margin-top: 12px; list-style: none; }
+.pillar {
+  display: flex;
+  align-items: center;
+  font-size: clamp(40px, 5.2vw, 92px);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -.03em;
+  cursor: pointer;
+}
+/* The arrow opens its own space as it rises, so the words sit flush until then. */
+.pillar__arrow {
+  flex: none;
+  width: 0;
+  height: .62em;
+  margin-right: 0;
+  fill: var(--ink);
+  transform: translateY(.4em);
+  opacity: 0;
+  transition: width .5s var(--ease), margin .5s var(--ease), transform .5s var(--ease), opacity .3s;
+}
+.pillar:hover .pillar__arrow, .pillar.is-on .pillar__arrow { width: .29em; margin-right: .2em; opacity: 1; transform: translateY(0); }
+
+/* ── Brand line ─────────────────────────────────────────────────────── */
+
+.brandline { margin-top: var(--space); }
+.big-lines { margin-top: 18px; }
+/* Both lines solid, in Montserrat, sized by script so each stays fully on screen while it drifts. */
+.big-line {
+  display: block;
+  width: max-content;
+  font-size: 9vw;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.02em;
+  white-space: nowrap;
+  will-change: transform;
+}
+.brandline__foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px var(--gutter);
+  margin-top: 28px;
+}
+
+/* ── Logo ───────────────────────────────────────────────────────────── */
+
+.mark-stage {
+  margin-top: var(--space);
+  border-radius: 24px;
+  background: var(--mist);
+  padding: clamp(48px, 8vw, 130px) var(--margin) 28px;
+  display: grid;
+  justify-items: center;
+}
+.mark-stage__logo { width: min(56%, 620px); height: auto; fill: var(--ink); }
+.mark-stage__cap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: clamp(40px, 6vw, 96px);
+}
+
+.logo-block {
+  margin-top: var(--space);
+  display: grid;
+  grid-template-columns: 5fr 6fr;
+  gap: calc(var(--gutter) * 3);
+  align-items: center;
+}
+.logo-block--stack { grid-template-columns: 1fr; align-items: start; gap: 28px; }
+.logo-block__copy .label { margin-bottom: 12px; }
+.logo-block__copy .block-text { max-width: 46ch; }
+
+/* Clear-space diagram: the guides draw in, the x squares settle on top. */
+.space { width: 100%; height: auto; overflow: visible; }
+.space__logo { fill: var(--ink); }
+.space__line {
+  fill: none;
+  stroke: var(--ink);
+  stroke-opacity: .35;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.space__x rect { fill: none; stroke: var(--ink); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+/* A thin paper outline lets each x read over the logo as well as the paper. */
+.space__x text { font-size: 22px; font-weight: 600; text-anchor: middle; fill: var(--ink); stroke: var(--paper); stroke-width: 4px; paint-order: stroke; }
+/* The measure itself, on the f's hook, in Lal Mirch red. */
+.space__x .space__ref { stroke: #DB333B; stroke-width: 2; }
+.space__x .space__ref-x { fill: #DB333B; }
+.js .space__x { opacity: 0; }
+
+.sizes { margin-top: 26px; width: 100%; max-width: 520px; border-collapse: collapse; }
+.sizes th { text-align: left; padding-bottom: 10px; opacity: .55; }
+.sizes td { padding: 8px 0; vertical-align: top; }
+.sizes td + td, .sizes th + th { padding-left: 20px; white-space: nowrap; }
+
+/* Resize the wordmark yourself and see where it gets too small. */
+.sizer {
+  border-radius: 24px;
+  background: var(--mist);
+  padding: 28px;
+  display: grid;
+  gap: 18px;
+}
+.sizer__stage { height: clamp(200px, 22vw, 300px); display: grid; place-items: center; overflow: hidden; }
+.sizer__logo { width: 200px; height: auto; fill: var(--ink); transition: opacity .3s; }
+.sizer.is-small .sizer__logo { opacity: .3; }
+.sizer__control { display: grid; gap: 10px; }
+.sizer input[type="range"] { width: 100%; accent-color: var(--ink); }
+.sizer__read { display: flex; justify-content: space-between; gap: 12px; font-weight: 600; }
+.sizer__note { font-weight: 400; }
+.sizer.is-small .sizer__note { font-weight: 600; }
+
+.versions { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gutter); }
+.version {
+  border-radius: 24px;
+  background: var(--mist);
+  aspect-ratio: 4 / 3;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  justify-items: center;
+  padding: 24px;
+}
+.version svg { width: 46%; height: auto; align-self: center; fill: var(--ink); }
+.version figcaption { justify-self: start; }
+.version--dark { background: var(--ink); color: var(--paper); }
+.version--dark svg { fill: var(--paper); }
+
+.dos { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 18px calc(var(--gutter) * 3); }
+.dos li { display: flex; gap: 16px; align-items: baseline; font-size: clamp(20px, 1.6vw, 26px); font-weight: 500; line-height: 1.25; }
+.dos .label { flex: none; }
+
+/* Don'ts: each shows the mistake; pointing at it (or tapping) puts it right. */
+.donts { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gutter); }
+.dont { display: grid; gap: 14px; cursor: pointer; outline-offset: 4px; }
+.dont__art {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 20px;
+  background: var(--mist);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+/* The cross, top left, drawn from two strokes. */
+.dont__art::before, .dont__art::after {
+  content: "";
+  position: absolute;
+  left: 22px; top: 30px;
+  width: 22px; height: 2px;
+  background: var(--ink);
+  rotate: 45deg;
+  transition: opacity .3s;
+}
+.dont__art::after { rotate: -45deg; }
+.dont__wrong {
+  width: 46%;
+  height: auto;
+  fill: var(--ink);
+  transform: var(--wrong, none);
+  transition: transform .7s var(--ease), filter .5s, opacity .5s, fill .4s, stroke .4s;
+  position: relative;
+}
+.dont figcaption { font-size: clamp(18px, 1.35vw, 21px); font-weight: 500; }
+.dont:is(:hover, .is-fixed) .dont__wrong { transform: none; }
+.dont:is(:hover, .is-fixed) .dont__art::before, .dont:is(:hover, .is-fixed) .dont__art::after { opacity: 0; }
+
+.dont--outline .dont__wrong { fill: transparent; stroke: var(--ink); stroke-width: 1.4px; }
+.dont--outline:is(:hover, .is-fixed) .dont__wrong { fill: var(--ink); stroke: transparent; }
+.dont--shadow .dont__wrong { filter: drop-shadow(8px 10px 6px rgba(0, 0, 0, .35)) blur(.3px); }
+.dont--shadow:is(:hover, .is-fixed) .dont__wrong { filter: none; }
+.dont--faint .dont__wrong { opacity: .16; }
+.dont--faint:is(:hover, .is-fixed) .dont__wrong { opacity: 1; }
+.dont__type { width: auto; font-size: clamp(40px, 4.6vw, 76px); font-weight: 700; line-height: 1; }
+.dont--typed .dont__art { grid-template-areas: "a"; }
+.dont--typed .dont__art > * { grid-area: a; }
+.dont__bg { position: absolute; width: 92%; height: auto; transition: opacity .5s; }
+.dont--busy .dont__wrong { position: relative; }
+.dont--busy:is(:hover, .is-fixed) .dont__bg { opacity: 0; }
+.dont__copy {
+  position: absolute;
+  left: 50%; top: 56%;
+  translate: -50% 0;
+  white-space: nowrap;
+  font-size: 15px;
+  transition: opacity .4s, transform .6s var(--ease);
+}
+.dont--crowd:is(:hover, .is-fixed) .dont__copy { opacity: 0; transform: translateY(30px); }
+
+/* ── Colour ─────────────────────────────────────────────────────────── */
+
+.values { display: block; font-size: 15px; font-weight: 500; line-height: 1.45; letter-spacing: .02em; }
+
+.core {
+  margin-top: var(--space);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gutter);
+}
+.core__swatch {
+  min-height: clamp(260px, 28vw, 420px);
+  border-radius: 24px;
+  padding: 26px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  text-align: left;
+}
+.core__swatch--black { background: var(--ink); color: var(--paper); }
+.core__swatch--white { background: var(--paper); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
+.core__name { align-self: center; font-size: var(--t-h2); font-weight: 700; letter-spacing: -.025em; line-height: 1; }
+
+/* The palette, tossed on a black table like the reference: cards you can pick up. */
+/* Edge to edge: it steps out of the page margins. */
+.table-top {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  margin-inline: calc(var(--margin) * -1);
+  border-radius: 0;
+  background: var(--ink);
+  overflow: hidden;
+}
+.chip {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 22%;
+  aspect-ratio: 1;
+  padding: 5% 6%;
+  background: var(--bg);
+  color: var(--fg);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  text-align: center;
+  border-radius: 14px;
+  rotate: var(--r);
+  touch-action: none;
+  user-select: none;
+  cursor: grab;
+  will-change: transform;
+}
+.chip:active { cursor: grabbing; }
+.chip__name { font-size: clamp(22px, 3vw, 52px); font-weight: 700; letter-spacing: -.01em; line-height: 1; text-transform: uppercase; }
+.chip__hi { display: block; margin-top: .3em; font-size: .5em; font-weight: 600; text-transform: none; letter-spacing: 0; }
+.chip .values { grid-row: 3; font-size: clamp(11px, 1vw, 15px); }
+
+/* Proportion bar */
+.mix { display: grid; gap: 18px; }
+.mix__bar {
+  display: flex;
+  height: clamp(120px, 14vw, 200px);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+}
+.mix__part { display: flex; align-items: flex-end; padding: 16px; transition: background-color .6s var(--ease), color .6s var(--ease); }
+.mix__part--base { flex: 60; background: var(--ink); color: var(--paper); }
+.mix__part--main { flex: 30; background: var(--main, #DB333B); color: var(--main-fg, var(--ink)); }
+.mix__part--accent { flex: 10; background: var(--accent, #2B3990); color: var(--accent-fg, var(--paper)); }
+.mix__pick { display: flex; flex-wrap: wrap; gap: 12px; }
+.mix__pick button {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12);
+  transition: transform .4s var(--ease), box-shadow .3s;
+}
+.mix__pick button[aria-checked="true"] { box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--ink); transform: scale(1.06); }
+
+/* Copied! */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  z-index: 40;
+  translate: -50% 0;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .3s, transform .4s var(--ease);
+  pointer-events: none;
+}
+.toast.is-on { opacity: 1; transform: translateY(0); }
+
+/* ── Type ───────────────────────────────────────────────────────────── */
+
+/* Specimen sheet, the way foundries present a family. */
+.specimen {
+  margin-top: var(--space);
+  border-radius: 24px;
+  background: var(--ink);
+  color: var(--paper);
+  padding: clamp(24px, 3vw, 44px);
+}
+.specimen__top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; }
+.specimen__name { font-size: var(--t-h3); font-weight: 600; letter-spacing: -.01em; }
+.specimen__download {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 22px;
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 600;
+  transition: transform .4s var(--ease);
+}
+.specimen__download svg { width: 9px; height: auto; fill: currentColor; rotate: 180deg; transition: transform .4s var(--ease); }
+.specimen__download:hover svg { transform: translateY(-4px); }
+.specimen__hero {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0 .2em;
+  margin-block: clamp(20px, 4vw, 60px);
+  font-size: clamp(110px, 20vw, 360px);
+  line-height: 1.05;
+  font-weight: var(--hw, 600);
+  user-select: none;
+}
+.specimen__italic { font-style: italic; }
+.specimen + .specimen { margin-top: var(--gutter); }
+/* The Hindi specimen: Anek Devanagari, with its width axis as well as weight. */
+.specimen--hi { background: var(--mist); color: var(--ink); }
+.specimen--hi .specimen__download { background: var(--ink); color: var(--paper); }
+.specimen--hi .specimen__hero { font-family: "Anek Devanagari", sans-serif; font-variation-settings: "wdth" var(--hd, 100); }
+.specimen__facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px var(--gutter);
+}
+.specimen__facts dt { opacity: .55; margin-bottom: 4px; }
+
+/* Tester */
+.tester { border-radius: 24px; background: var(--mist); padding: clamp(20px, 2.6vw, 36px); display: grid; gap: 26px; }
+.tester__controls { display: grid; grid-template-columns: 2fr 2fr auto auto; gap: 18px var(--gutter); align-items: end; }
+.tester__controls label { display: grid; gap: 8px; }
+.tester__controls output { font-variant-numeric: tabular-nums; }
+.tester input[type="range"] { width: 100%; accent-color: var(--ink); }
+.tester__controls .tester__italic { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.tester__italic input { width: 18px; height: 18px; accent-color: var(--ink); }
+.tester__scripts { display: flex; gap: 6px; }
+.tester__scripts button {
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+}
+.tester__scripts button[aria-checked="true"] { background: var(--ink); color: var(--paper); }
+.tester__text {
+  min-height: 1.2em;
+  font-size: 72px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -.02em;
+  outline: none;
+  overflow-wrap: anywhere;
+}
+
+/* Weights */
+.weights { list-style: none; display: grid; gap: 6px; }
+.weights li { display: grid; grid-template-columns: 200px 1fr; align-items: baseline; gap: var(--gutter); }
+.weights .label { opacity: .55; }
+.weights__sample { font-size: clamp(28px, 3.4vw, 56px); font-weight: var(--w); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Scale */
+.scale { display: grid; gap: 22px; }
+.scale > div { display: grid; grid-template-columns: 200px 1fr; align-items: baseline; gap: var(--gutter); }
+.scale dt { opacity: .55; }
+.scale__h1 { font-size: var(--t-h1); font-weight: 700; line-height: .95; letter-spacing: -.03em; }
+.scale__h2 { font-size: var(--t-h2); font-weight: 700; line-height: 1.05; letter-spacing: -.025em; }
+.scale__h3 { font-size: var(--t-h3); font-weight: 700; letter-spacing: -.02em; }
+
+/* ── Footer ─────────────────────────────────────────────────────────── */
+
+.footer { background: var(--ink); color: var(--paper); }
+/* Kept compact: the mark and brand line, the details, and the way back up. */
+.footer__brand { display: grid; gap: 14px; align-content: start; }
+/* Cropped tight to the wordmark, so it sits flush left with the text below. */
+.footer__logo { width: clamp(80px, 7vw, 110px); height: auto; fill: var(--paper); }
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: 4fr 3fr 3fr;
+  gap: calc(var(--gutter) * 3);
+  padding-block: 40px 24px;
+}
+.footer__line { font-size: var(--t-h3); font-weight: 600; line-height: 1.1; letter-spacing: -.02em; }
+.footer__col { display: grid; gap: 8px; align-content: start; font-size: 17px; }
+.footer__col .label { opacity: .55; margin-bottom: 6px; }
+.footer__col a { width: fit-content; position: relative; }
+.footer__col a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .4s var(--ease);
+}
+.footer__col a:hover::after { transform: scaleX(1); }
+
+/* Bottom bar: two arrows, bottom right, back to the top. */
+.footer__base {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--gutter);
+  padding-block: 16px 22px;
+}
+.footer__base .label { opacity: .55; }
+.up { display: flex; gap: 10px; padding: 6px; }
+.up svg { width: 16px; height: auto; fill: var(--paper); transition: transform .45s var(--ease); }
+.up svg + svg { transition-delay: .06s; }
+.up:hover svg { transform: translateY(-8px); }
+
+/* ── Arrow cursor (fine pointers only) ──────────────────────────────── */
+
+.cursor {
+  position: fixed;
+  left: 0; top: 0;
+  z-index: 50;
+  width: 18px;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  fill: #fff;
+  opacity: 0;
+  transition: opacity .3s;
+}
+.cursor svg { width: 100%; height: auto; transition: scale .35s var(--ease); transform-origin: 50% 0; }
+.has-cursor, .has-cursor * { cursor: none !important; }
+.has-cursor .cursor { opacity: 1; }
+.cursor.is-big svg { scale: 1.8; }
+
+/* ── Motion: hidden until scrolled into view (only when scripts run) ── */
+
+.js .rise { opacity: 0; }
+.js [data-reveal] > span { transform: translateY(105%); }
+
+@media (prefers-reduced-motion: reduce) {
+  .swap, .swap > span { transition: none; }
+}
+
+/* ── Smaller screens ────────────────────────────────────────────────── */
+
+@media (max-width: 1100px) {
+  .cards { grid-template-columns: repeat(2, 1fr); }
+  .donts { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 720px) {
+  .nav__links { gap: 16px; }
+  .make, .belief { grid-template-columns: 1fr; }
+  .scene { aspect-ratio: 16 / 12; }
+  .cards { grid-template-columns: 1fr; }
+  .card { min-height: 220px; }
+  .footer__grid { grid-template-columns: 1fr; }
+  .logo-block, .versions, .dos { grid-template-columns: 1fr; }
+  .donts { grid-template-columns: 1fr 1fr; }
+  .core { grid-template-columns: 1fr; }
+  .specimen__facts { grid-template-columns: 1fr 1fr; }
+  .tester__controls { grid-template-columns: 1fr; }
+  .weights li, .scale > div { grid-template-columns: 1fr; gap: 2px; }
+  /* On phones the palette is a tidy grid you can tap. */
+  .table-top { aspect-ratio: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; }
+  .chip { position: static; width: auto; rotate: none; touch-action: auto; cursor: pointer; }
+}

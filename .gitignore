@@ -1,0 +1,8 @@
+# The readable manual stays on this machine; only the encrypted index.html is published.
+manual.html
+# Assets from the first banner, no longer used.
+assets/bottles/
+assets/bottles.json
+build-assets.py
+.DS_Store
+setup-publish.sh
