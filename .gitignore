@@ -7,3 +7,4 @@ build-assets.py
 .DS_Store
 setup-publish.sh
 publish.sh
+.claude/

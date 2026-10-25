@@ -90,7 +90,7 @@ const page = `<!doctype html>
   .gate h1 { font-size: 14px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; opacity: .6; }
   .gate p { font-size: 18px; line-height: 1.4; }
   form { display: flex; gap: 8px; }
-  input {
+  #pw {
     flex: 1;
     min-width: 0;
     padding: 14px 18px;
@@ -101,7 +101,7 @@ const page = `<!doctype html>
     color: var(--ink);
     background: var(--paper);
   }
-  input:focus { outline: 2px solid var(--paper); outline-offset: 3px; }
+  #pw:focus { outline: 2px solid var(--paper); outline-offset: 3px; }
   button {
     padding: 0 22px;
     border: 1.5px solid var(--paper);
@@ -113,6 +113,8 @@ const page = `<!doctype html>
     cursor: pointer;
   }
   button:hover { background: var(--paper); color: var(--ink); }
+  .show { display: flex; align-items: center; gap: 10px; margin-top: -14px; font-size: 15px; cursor: pointer; user-select: none; }
+  .show input { width: 18px; height: 18px; accent-color: var(--paper); cursor: pointer; }
   .error { min-height: 1.4em; font-size: 15px !important; opacity: .8; }
 </style>
 </head>
@@ -120,11 +122,12 @@ const page = `<!doctype html>
 <main class="gate">
   <svg viewBox="175.14 177.73 246.95 175.88" role="img" aria-label="सिर्फ">${wordmark}</svg>
   <h1>Brand Manual · 2026</h1>
-  <p>This manual is private. Enter the password you were given.</p>
+  <p>This manual is private.</p>
   <form id="gate">
     <input id="pw" type="password" autocomplete="current-password" aria-label="Password" placeholder="Password" required autofocus>
     <button type="submit">Open</button>
   </form>
+  <label class="show"><input type="checkbox" id="show"> Show password</label>
   <p class="error" id="error" role="alert"></p>
 </main>
 <script>
@@ -153,6 +156,10 @@ const page = `<!doctype html>
       if (saved) await open(await crypto.subtle.importKey('raw', bytes(saved), 'AES-GCM', false, ['decrypt']));
     } catch (e) { try { sessionStorage.removeItem(KEEP); } catch (_) {} }
   })();
+
+  document.getElementById('show').addEventListener('change', e => {
+    document.getElementById('pw').type = e.target.checked ? 'text' : 'password';
+  });
 
   document.getElementById('gate').addEventListener('submit', async e => {
     e.preventDefault();

@@ -28,7 +28,7 @@ body {
   font-family: "Montserrat", "Anek Devanagari", sans-serif;
   font-optical-sizing: auto;
   font-size: var(--t-body);
-  line-height: 1.45;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -68,7 +68,9 @@ html.lenis, html.lenis body { height: auto; }
   mix-blend-mode: difference;
   pointer-events: none;
 }
-.nav a { pointer-events: auto; }
+.nav a, .nav button { pointer-events: auto; }
+.nav__toggle { display: none; }
+.on-phone { display: none; }
 .nav__links { display: flex; gap: clamp(14px, 2.4vw, 36px); }
 .nav__links a { position: relative; }
 .nav__links a::after {
@@ -103,6 +105,15 @@ html.lenis, html.lenis body { height: auto; }
 }
 .stage .logo, .stage .labels { position: absolute; inset: 0; width: 100%; height: 100%; }
 /* The banner type is part of the artwork, so it stays in Anek Devanagari. */
+/* Phones (tall screens) get the stacked banner instead of the wide artboard. */
+.stage--tall { display: none; width: min(100vw, calc(100svh * 1080 / 1920)); aspect-ratio: 1080 / 1920; }
+.stage--tall .labels { position: absolute; inset: 0; width: 100%; height: 100%; }
+.stage--tall .label--title { font-size: 72px; }
+.stage--tall .label--year { font-size: 34px; }
+@media (max-aspect-ratio: 4/5) {
+  .stage--wide { display: none; }
+  .stage--tall { display: block; }
+}
 .labels { fill: #000; font-family: "Anek Devanagari", sans-serif; }
 .label--title { font-size: 46.85px; font-weight: 700; }
 .label--year  { font-size: 21.25px; font-weight: 400; }
@@ -119,21 +130,21 @@ main { padding-bottom: var(--space); }
 .sec-head__title {
   font-size: var(--t-h1);
   font-weight: 700;
-  line-height: .95;
+  line-height: 1.05;
   letter-spacing: -.03em;
 }
 .sec-head__hi {
   font-size: var(--t-hi);
   font-weight: 500;
-  line-height: 1.2;
+  line-height: 1.3;
 }
 /* A heading line slides up out of its own mask; the room above and below keeps matras whole. */
 [data-reveal] { overflow: hidden; padding-block: .25em .12em; margin-block: -.25em -.12em; }
 [data-reveal] > span { display: block; }
 
-.block-title { font-size: var(--t-h3); font-weight: 700; line-height: 1.1; letter-spacing: -.02em; }
+.block-title { font-size: var(--t-h3); font-weight: 700; line-height: 1.25; letter-spacing: -.02em; }
 /* Heading for each content block in a section (What we make, Positioning, …): one size everywhere. */
-.block-heading { font-size: var(--t-h2); font-weight: 700; line-height: 1.05; letter-spacing: -.025em; max-width: 20ch; }
+.block-heading { font-size: var(--t-h2); font-weight: 700; line-height: 1.2; letter-spacing: -.025em; max-width: 20ch; }
 .block-text { margin-top: 14px; max-width: 40ch; }
 
 /* ── Introduction ───────────────────────────────────────────────────── */
@@ -148,13 +159,13 @@ main { padding-bottom: var(--space); }
   margin-top: clamp(28px, 3vw, 48px);
   font-size: var(--t-h2);
   font-weight: 700;
-  line-height: 1.05;
+  line-height: 1.2;
   letter-spacing: -.025em;
 }
 .only__line {
   font-size: clamp(17px, 2vw, 34px);
   font-weight: 500;
-  line-height: 1.15;
+  line-height: 1.3;
   letter-spacing: -.01em;
   white-space: nowrap;
 }
@@ -203,7 +214,7 @@ main { padding-bottom: var(--space); }
   width: fit-content;
   font-size: clamp(28px, 3.4vw, 58px);
   font-weight: 700;
-  line-height: 1.05;
+  line-height: 1.15;
   letter-spacing: -.025em;
 }
 .nots li::after {
@@ -256,7 +267,7 @@ main { padding-bottom: var(--space); }
   will-change: transform;
 }
 .card__num { margin-bottom: auto; padding-bottom: 48px; }
-.card__title { font-size: var(--t-h3); font-weight: 700; line-height: 1.08; letter-spacing: -.02em; }
+.card__title { font-size: var(--t-h3); font-weight: 700; line-height: 1.25; letter-spacing: -.02em; }
 .card__text { margin-top: 10px; }
 .card:nth-child(2) { background: var(--ink); color: var(--paper); }
 
@@ -266,7 +277,7 @@ main { padding-bottom: var(--space); }
 .home__line {
   font-size: var(--t-h2);
   font-weight: 700;
-  line-height: 1.05;
+  line-height: 1.25;
   letter-spacing: -.025em;
 }
 
@@ -282,7 +293,7 @@ main { padding-bottom: var(--space); }
   max-width: 20ch;
   font-size: clamp(26px, 2.6vw, 44px);
   font-weight: 600;
-  line-height: 1.1;
+  line-height: 1.3;
   letter-spacing: -.02em;
 }
 
@@ -294,7 +305,7 @@ main { padding-bottom: var(--space); }
   align-items: center;
   font-size: clamp(40px, 5.2vw, 92px);
   font-weight: 700;
-  line-height: 1.02;
+  line-height: 1.15;
   letter-spacing: -.03em;
   cursor: pointer;
 }
@@ -321,7 +332,7 @@ main { padding-bottom: var(--space); }
   width: max-content;
   font-size: 9vw;
   font-weight: 700;
-  line-height: 1;
+  line-height: 1.1;
   letter-spacing: -.02em;
   white-space: nowrap;
   will-change: transform;
@@ -422,7 +433,7 @@ main { padding-bottom: var(--space); }
 .version--dark svg { fill: var(--paper); }
 
 .dos { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 18px calc(var(--gutter) * 3); }
-.dos li { display: flex; gap: 16px; align-items: baseline; font-size: clamp(20px, 1.6vw, 26px); font-weight: 500; line-height: 1.25; }
+.dos li { display: flex; gap: 16px; align-items: baseline; font-size: clamp(20px, 1.6vw, 26px); font-weight: 500; line-height: 1.4; }
 .dos .label { flex: none; }
 
 /* Don'ts: each shows the mistake; pointing at it (or tapping) puts it right. */
@@ -502,7 +513,7 @@ main { padding-bottom: var(--space); }
 }
 .core__swatch--black { background: var(--ink); color: var(--paper); }
 .core__swatch--white { background: var(--paper); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
-.core__name { align-self: center; font-size: var(--t-h2); font-weight: 700; letter-spacing: -.025em; line-height: 1; }
+.core__name { align-self: center; font-size: var(--t-h2); font-weight: 700; letter-spacing: -.025em; line-height: 1.1; }
 
 /* The palette, tossed on a black table like the reference: cards you can pick up. */
 /* Edge to edge: it steps out of the page margins. */
@@ -534,7 +545,7 @@ main { padding-bottom: var(--space); }
   will-change: transform;
 }
 .chip:active { cursor: grabbing; }
-.chip__name { font-size: clamp(22px, 3vw, 52px); font-weight: 700; letter-spacing: -.01em; line-height: 1; text-transform: uppercase; }
+.chip__name { font-size: clamp(22px, 3vw, 52px); font-weight: 700; letter-spacing: -.01em; line-height: 1.1; text-transform: uppercase; }
 .chip__hi { display: block; margin-top: .3em; font-size: .5em; font-weight: 600; text-transform: none; letter-spacing: 0; }
 .chip .values { grid-row: 3; font-size: clamp(11px, 1vw, 15px); }
 
@@ -650,7 +661,7 @@ main { padding-bottom: var(--space); }
   min-height: 1.2em;
   font-size: 72px;
   font-weight: 600;
-  line-height: 1.15;
+  line-height: 1.3;
   letter-spacing: -.02em;
   outline: none;
   overflow-wrap: anywhere;
@@ -666,8 +677,8 @@ main { padding-bottom: var(--space); }
 .scale { display: grid; gap: 22px; }
 .scale > div { display: grid; grid-template-columns: 200px 1fr; align-items: baseline; gap: var(--gutter); }
 .scale dt { opacity: .55; }
-.scale__h1 { font-size: var(--t-h1); font-weight: 700; line-height: .95; letter-spacing: -.03em; }
-.scale__h2 { font-size: var(--t-h2); font-weight: 700; line-height: 1.05; letter-spacing: -.025em; }
+.scale__h1 { font-size: var(--t-h1); font-weight: 700; line-height: 1.05; letter-spacing: -.03em; }
+.scale__h2 { font-size: var(--t-h2); font-weight: 700; line-height: 1.2; letter-spacing: -.025em; }
 .scale__h3 { font-size: var(--t-h3); font-weight: 700; letter-spacing: -.02em; }
 
 /* ── Footer ─────────────────────────────────────────────────────────── */
@@ -684,7 +695,7 @@ main { padding-bottom: var(--space); }
   gap: calc(var(--gutter) * 3);
   padding-block: 40px 24px;
 }
-.footer__line { font-size: var(--t-h3); font-weight: 600; line-height: 1.1; letter-spacing: -.02em; }
+.footer__line { font-size: var(--t-h3); font-weight: 600; line-height: 1.3; letter-spacing: -.02em; }
 .footer__col { display: grid; gap: 8px; align-content: start; font-size: 17px; }
 .footer__col .label { opacity: .55; margin-bottom: 6px; }
 .footer__col a { width: fit-content; position: relative; }
@@ -743,7 +754,43 @@ main { padding-bottom: var(--space); }
 }
 
 @media (max-width: 720px) {
-  .nav__links { gap: 16px; }
+  .on-wide { display: none; }
+  .on-phone { display: inline; }
+
+  /* Phone nav: a round menu button that opens a black panel of links. */
+  .nav { mix-blend-mode: normal; padding: 16px var(--margin); }
+  .nav__toggle {
+    display: grid;
+    place-content: center;
+    gap: 6px;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--ink);
+    box-shadow: 0 0 0 1.5px var(--paper);
+    position: relative;
+    z-index: 2;
+  }
+  .nav__toggle span { display: block; width: 18px; height: 2px; background: var(--paper); transition: transform .4s var(--ease); }
+  .nav__toggle[aria-expanded="true"] span:first-child { transform: translateY(4px) rotate(45deg); }
+  .nav__toggle[aria-expanded="true"] span:last-child { transform: translateY(-4px) rotate(-45deg); }
+  .nav__links {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 22px;
+    padding: 0 var(--margin);
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 30px;
+    letter-spacing: .04em;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .35s var(--ease), visibility 0s .35s;
+  }
+  .nav.is-open .nav__links { opacity: 1; visibility: visible; transition: opacity .35s var(--ease); }
+  .nav__links a { pointer-events: auto; width: fit-content; }
   .make, .belief { grid-template-columns: 1fr; }
   .scene { aspect-ratio: 16 / 12; }
   .cards { grid-template-columns: 1fr; }

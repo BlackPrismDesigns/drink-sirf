@@ -329,5 +329,18 @@ function markCurrent() {
 addEventListener('scroll', markCurrent, { passive: true });
 markCurrent();
 
+// ── Phone menu: the button opens the black panel of links; picking one, or Escape, closes it.
+const nav = document.querySelector('.nav');
+const toggle = nav.querySelector('.nav__toggle');
+const setMenu = open => {
+  nav.classList.toggle('is-open', open);
+  toggle.setAttribute('aria-expanded', String(open));
+  toggle.setAttribute('aria-label', open ? 'Close menu' : 'Menu');
+  if (lenis) open ? lenis.stop() : lenis.start();
+};
+toggle.addEventListener('click', () => setMenu(!nav.classList.contains('is-open')));
+nav.querySelectorAll('.nav__links a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+
 // ── This way up.
 document.querySelectorAll('[data-up]').forEach(b => b.addEventListener('click', () => scrollToTarget(0)));
